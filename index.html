@@ -302,23 +302,86 @@
         </nav>
 
         <!-- ================= 6. CAMERA MODAL OVERLAY ================= -->
-        <div id="cameraModal" class="absolute inset-0 bg-black z-60 flex flex-col justify-between p-4 hidden">
-            <div class="flex justify-between items-center text-white pt-2">
-                <h3 class="text-xs font-bold">कॅमेरा (Camera Access)</h3>
-                <button type="button" onclick="closeCameraModal()" class="text-xs font-bold bg-red-600 px-3 py-1 rounded-full text-white">✕ बंद करा</button>
-            </div>
-            
-            <div class="relative w-full flex-1 bg-gray-900 rounded-xl overflow-hidden flex items-center justify-center my-2 border border-yellow-400">
-                <div class="relative w-full flex-1 bg-black rounded-xl overflow-hidden flex flex-col items-center justify-center p-2">
-    <!-- कॅमेऱ्याचा आकार 3:4 करण्यासाठी व्हिडिओ टॅग -->
-    <video id="cameraVideo" autoplay playsinline style="width: 100%; max-width: 300px; aspect-ratio: 3/4; object-fit: cover; background: black; border-radius: 8px;"></video>
-    <canvas id="cameraCanvas" class="hidden"></canvas>
-    <div id="cameraPlaceholder" class="absolute text-white text-xs text-center p-4">
-        कॅमेरा सुरू होत आहे... कृपया परवानग्या (Permissions) अलाउड करा.
+        <!-- डिजिटल ओळखपत्र डिझाइन (Same to Same Layout) -->
+<div id="idCardContainer" style="width: 100%; max-width: 400px; background: #002366; border: 4px solid #FFD700; border-radius: 12px; padding: 15px; margin: 0 auto; color: white; font-family: Arial, sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+    
+    <!-- १. महापुरुषांचे फोटो वरती -->
+    <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #FFD700; padding-bottom: 8px;">
+        <div style="text-align: center;"><img src=" buddha_image_url_or_base64 " style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #FFD700; object-fit: cover;"><div style="font-size: 8px; margin-top: 2px;">तथागत बुद्ध</div></div>
+        <div style="text-align: center;"><img src=" shivaji_image_url_or_base64 " style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #FFD700; object-fit: cover;"><div style="font-size: 8px; margin-top: 2px;">शिवाजी महाराज</div></div>
+        <div style="text-align: center;"><img src=" phule_image_url_or_base64 " style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #FFD700; object-fit: cover;"><div style="font-size: 8px; margin-top: 2px;">महात्मा फुले</div></div>
+        <div style="text-align: center;"><img src=" ambedkar_image_url_or_base64 " style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #FFD700; object-fit: cover;"><div style="font-size: 8px; margin-top: 2px;">डॉ. बाबासाहेब</div></div>
     </div>
-</div>  <!-- फोटो काढण्याचे लाल बटण -->
-<div class="flex justify-center py-3">
-    <button type="button" onclick="capturePhoto()" class="bg-reid-500 text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg" style="font-size: 16px;">फोटो काढा</button>
+
+    <!-- २. पक्ष नाव आणि लोगो -->
+    <div style="text-align: center; margin-bottom: 5px;">
+        <h2 style="color: #FFD700; font-size: 20px; margin: 0; font-weight: bold;">बहुजन समाज पार्टी</h2>
+        <div style="font-size: 11px; color: #FFF; margin-top: 2px;">|| बहुजन हिताय । बहुजन सुखाय ||</div>
+    </div>
+
+    <!-- ३. बाजूला मान्यवर आणि मध्ये सदस्याचा फोटो -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+        <!-- डावे मान्यवर -->
+        <div style="text-align: center; width: 28%;">
+            <img src=" kanshiram_image_url " style="width: 60px; height: 65px; border-radius: 8px; border: 2px solid #FFD700; object-fit: cover;">
+            <div style="font-size: 8px; background: #FFD700; color: black; font-weight: bold; border-radius: 4px; padding: 2px; margin-top: 2px;">मान्यवर काशीराम जी</div>
+        </div>
+
+        <!-- सदस्याचा कॅमेramधून आलेला फोटो -->
+        <div style="text-align: center; width: 40%;">
+            <div style="width: 75px; height: 85px; background: white; border: 3px solid #FFD700; border-radius: 8px; margin: 0 auto; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <img id="displayCapturedPhoto" src="" alt="सदस्य फोटो" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="font-size: 10px; background: #001a4d; border: 1px solid #FFD700; color: #FFD700; border-radius: 10px; padding: 2px 8px; margin-top: 4px; display: inline-block; font-weight: bold;">सदस्य</div>
+        </div>
+
+        <!-- उजवे मान्यवर -->
+        <div style="text-align: center; width: 28%;">
+            <img src=" mayawati_image_url " style="width: 60px; height: 65px; border-radius: 8px; border: 2px solid #FFD700; object-fit: cover;">
+            <div style="font-size: 8px; background: #FFD700; color: black; font-weight: bold; border-radius: 4px; padding: 2px; margin-top: 2px;">आदरणीय बहन जी</div>
+        </div>
+    </div>
+
+    <!-- ४. पदाधिकारी / सदस्य माहिती बॉक्स -->
+    <div style="background: white; color: black; border-radius: 8px; padding: 10px; margin-top: 10px;">
+        <div style="text-align: center; background: #002366; color: white; font-size: 12px; font-weight: bold; padding: 4px; border-radius: 4px; margin-bottom: 8px;">पदाधिकारी / सदस्य माहिती</div>
+        
+        <table style="width: 100%; font-size: 11px; line-height: 1.6;">
+            <tr><td style="font-weight: bold; width: 25%;">पद</td><td style="width: 5%;">:</td><td id="cardPad" style="border-bottom: 1px dotted gray;"></td></tr>
+            <tr><td style="font-weight: bold;">नाव</td><td>:</td><td id="cardName" style="border-bottom: 1px dotted gray; font-weight: bold;"></td></tr>
+            <tr><td style="font-weight: bold;">जन्मतारीख</td><td>:</td><td id="cardDob" style="border-bottom: 1px dotted gray;"></td></tr>
+            <tr><td style="font-weight: bold;">मोबाईल</td><td>:</td><td id="cardMobile" style="border-bottom: 1px dotted gray;"></td></tr>
+            <tr><td style="font-weight: bold;">पत्ता</td><td>:</td><td id="cardAddress" style="border-bottom: 1px dotted gray;"></td></tr>
+        </table>
+    </div>
+
+    <!-- ५. स्वाक्षरी आणि नाव खाली -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; font-size: 10px;">
+        <div style="text-align: center; width: 45%;">
+            <div style="border-bottom: 1px solid white; height: 20px; margin-bottom: 2px;"></div>
+            <div style="font-weight: bold; color: #FFD700;">अमोल रमेश पवार</div>
+            <div style="font-size: 8px;">(जिल्हा उपाध्यक्ष)</div>
+        </div>
+        <div style="text-align: center; width: 45%;">
+            <div style="border-bottom: 1px solid white; height: 20px; margin-bottom: 2px;"></div>
+            <div>सदस्य स्वाक्षरी</div>
+        </div>
+    </div>
+
+</div>
+
+                    <!-- कॅमेराचा आकार 3:4 आणि पिवळे बटण -->
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 10px;">
+    <div style="width: 100%; max-width: 280px; aspect-ratio: 3/4; position: relative; overflow: hidden; border-radius: 8px; background: black;">
+        <video id="cameraVideo" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+        <canvas id="cameraCanvas" style="display:none;"></canvas>
+        <div id="cameraPlaceholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 11px; text-align: center;">
+            कॅमेरा सुरू होत आहे...
+        </div>
+    </div>
+    <div style="margin-top: 15px;">
+        <button type="button" onclick="capturePhoto()" style="background-color: #eab308; color: #111827; font-weight: bold; padding: 10px 24px; border-radius: 9999px; border: none; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">फोटो काढा</button>
+    </div>
 </div>
             
                 <!-- ================= 7. CUSTOM MESSAGE MODAL (Instead of alert) ================= -->
