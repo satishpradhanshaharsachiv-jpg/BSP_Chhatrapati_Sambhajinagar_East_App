@@ -309,18 +309,19 @@
             </div>
             
             <div class="relative w-full flex-1 bg-gray-900 rounded-xl overflow-hidden flex items-center justify-center my-2 border border-yellow-400">
-                <video id="cameraVideo" autoplay playsinline class="w-full h-full object-cover"></video>
-                <canvas id="cameraCanvas" class="hidden"></canvas>
-                <div id="cameraPlaceholder" class="absolute text-white text-xs text-center p-4">
-                    कॅमेरा सुरू होत आहे... कृपया परवानग्या (Permissions) अलाउ करा.
-                </div>
-            </div>
+                <div class="relative w-full flex-1 bg-black rounded-xl overflow-hidden flex flex-col items-center justify-center p-2">
+    <!-- कॅमेऱ्याचा आकार 3:4 करण्यासाठी व्हिडिओ टॅग -->
+    <video id="cameraVideo" autoplay playsinline style="width: 100%; max-width: 300px; aspect-ratio: 3/4; object-fit: cover; background: black; border-radius: 8px;"></video>
+    <canvas id="cameraCanvas" class="hidden"></canvas>
+    <div id="cameraPlaceholder" class="absolute text-white text-xs text-center p-4">
+        कॅमेरा सुरू होत आहे... कृपया परवानग्या (Permissions) अलाउड करा.
+    </div>
+</div>
 
-            <div class="flex justify-center pb-4">
-                <<button type="button" onclick="capturePhoto()" class="bg-yellow-500 text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg">फोटो काढा</button> 
-            </div>
-        </div>
-
+<!-- फोटो काढण्याचे पिवळे बटण -->
+<div class="flex justify-center py-3">
+    <button type="button" onclick="capturePhoto()" class="bg-yellow-500 text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg" style="font-size: 16px;">फोटो काढा</button>
+</div>
         <!-- ================= 7. CUSTOM MESSAGE MODAL (Instead of alert) ================= -->
         <div id="customModal" class="absolute inset-0 bg-black/60 z-70 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl p-5 max-w-xs w-full shadow-2xl text-center space-y-3 border-2 border-yellow-400">
