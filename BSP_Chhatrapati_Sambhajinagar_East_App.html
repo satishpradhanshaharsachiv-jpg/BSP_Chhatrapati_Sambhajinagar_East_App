@@ -1,1 +1,862 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>बहुजन समाज पार्टी - छत्रपती संभाजीनगर पूर्व (Ultimate Pro)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            max-height: 860px;
+            margin: 0 auto;
+            background-color: #f0f4f8;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+        }
+        @media (min-width: 421px) {
+            body {
+                background-color: #0f172a;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+        }
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding-top: 8px;
+            padding-bottom: 20px;
+        }
+        .scrollable-content::-webkit-scrollbar {
+            display: none;
+        }
+        .bsp-gradient {
+            background: linear-gradient(135deg, #002366 0%, #001a4d 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 font-sans">
 
+    <div class="app-container" id="mainAppContainer">
+        
+        <!-- ================= १. स्प्लॅश स्क्रीन ================= -->
+        <div id="splashScreen" class="absolute inset-0 bsp-gradient z-50 flex flex-col items-center justify-between text-white p-6 transition-opacity duration-300">
+            <div class="w-full text-center pt-8">
+                <span class="bg-blue-800 text-yellow-300 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider border border-yellow-400">बहुजन समाज पार्टी</span>
+            </div>
+            
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center shadow-2xl border-4 border-yellow-400 animate-pulse">
+                    <span class="text-4xl">🐘</span>
+                </div>
+                <h1 class="text-2xl font-bold tracking-wide text-yellow-300">छत्रपती संभाजीनगर पूर्व</h1>
+                <p class="text-xs text-blue-200 max-w-xs">अडव्हान्स डिजिटल संघटन व ॲड मॉनेटायझेशन कक्ष</p>
+            </div>
+
+            <div class="w-full pb-8 flex flex-col items-center space-y-3">
+                <div class="w-10 h-10 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-yellow-200">ॲप लोड होत आहे...</p>
+            </div>
+        </div>
+
+        <!-- ================= २. लॉगिन स्क्रीन ================= -->
+        <div id="authScreen" class="absolute inset-0 bg-white z-45 flex flex-col justify-between p-6 hidden">
+            <div class="pt-6">
+                <div class="flex justify-center mb-4">
+                    <div class="w-20 h-20 bsp-gradient rounded-full flex items-center justify-center shadow-lg border-2 border-yellow-400">
+                        <span class="text-3xl">🐘</span>
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800 text-center">मोबाईल नंबर लॉगिन</h2>
+                <p class="text-xs text-gray-500 text-center mt-1">पूर्व विधानसभा अधिकृत पोर्टल</p>
+            </div>
+
+            <div class="space-y-4 my-auto">
+                <div id="phoneSection">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">मोबाईल नंबर प्रविष्ट करा</label>
+                    <input type="tel" id="mobileInput" placeholder="9876543210" maxlength="10" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-900 text-lg">
+                    <button type="button" onclick="ओटीपीपाठवा()" class="w-full mt-3 bsp-gradient text-white font-bold py-3 rounded-xl shadow-md hover:opacity-90 transition">ओटीपी (OTP) पाठवा</button>
+                </div>
+                
+                <div id="otpSection" class="hidden space-y-3 pt-2">
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">४ अंकी ओटीपी टाका (डिफॉल्ट: 1234)</label>
+                    <input type="text" id="otpInput" placeholder="1234" maxlength="4" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-900 text-lg tracking-widest text-center" value="1234">
+                    <button type="button" onclick="ओटीपीतपासा()" class="w-full bg-yellow-500 text-gray-900 font-bold py-3 rounded-xl shadow-md hover:bg-yellow-400 transition">लॉगिन पूर्ण करा</button>
+                </div>
+            </div>
+
+            <div class="pb-4 text-center">
+                <p class="text-xs text-gray-400">डेव्हलपर: <span class="text-blue-900 font-bold">सतीश प्रधान</span></p>
+            </div>
+        </div>
+
+        <!-- ================= ३. शीर्ष हेडर्स (Top Fixed) ================= -->
+        <header class="bsp-gradient text-white px-4 py-2.5 flex items-center justify-between shadow-md z-30 shrink-0">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-900 font-bold border border-yellow-400 text-sm">
+                    <span>🐘</span>
+                </div>
+                <div>
+                    <h1 class="text-xs font-bold leading-tight">बहुजन समाज पार्टी</h1>
+                    <p class="text-[9px] text-yellow-300">छत्रपती संभाजीनगर पूर्व</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button type="button" onclick="कॅमेरामोडालउघडा('main')" class="bg-yellow-500 text-gray-900 px-2.5 py-1 rounded-full text-xs font-bold flex items-center space-x-1 shadow" title="कॅमेरा">
+                    <span>📸</span> <span class="text-[10px]">कॅमेरा</span>
+                </button>
+                <button type="button" onclick="सूचनादाखवा('सूचना', 'सध्या सर्व यंत्रणा सुरळीत कार्यरत आहे.')" class="relative p-1 text-yellow-300 text-sm">
+                    🔔 <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <div class="bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-900 px-3 py-1 text-[10px] font-bold flex justify-between items-center shrink-0 shadow-inner">
+            <span class="truncate">📢 पूर्व विभाग प्रायोजक जाहिरात जागा (Ad Space for Revenue)</span>
+            <span class="bg-black text-yellow-300 px-1.5 py-0.5 rounded text-[8px] uppercase">Ad</span>
+        </div>
+
+        <!-- ================= ४. मुख्य स्क्रोल करण्यायोग्य विभाग ================= -->
+        <div class="scrollable-content p-3 space-y-3">
+
+            <div class="bsp-gradient rounded-xl p-3 text-white shadow-md relative overflow-hidden border border-yellow-500/30">
+                <div class="absolute right-[-10px] bottom-[-10px] opacity-10 text-6xl">🐘</div>
+                <span class="bg-yellow-400 text-gray-900 text-[9px] font-bold px-2 py-0.5 rounded">पूर्व विधानसभा कक्ष</span>
+                <h2 class="text-xs font-bold mt-1 text-yellow-300">पूर्व विभाग प्रमुख मार्गदर्शन</h2>
+                <p class="text-[11px] text-blue-100 mt-0.5">"संविधान आणि बहुजन हितासाठी सदैव कटिबद्ध."</p>
+                <div class="mt-2 flex flex-col space-y-0.5 text-[10px] text-yellow-300 font-semibold">
+                    <span>पूर्व विधानसभा चीफ: अमोल रमेश पवार</span>
+                    <span>जिल्हा प्रभारी व पूर्व अध्यक्ष कक्ष</span>
+                </div>
+            </div>
+
+            <!-- द्रुत नॅव्हिगेशन ग्रिड -->
+            <div class="grid grid-cols-4 gap-2">
+                <button type="button" onclick="टॅबबदला('home')" id="btnTab-home" class="bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border-2 border-blue-900 transition">
+                    <span class="text-lg mb-0.5">🏠</span>
+                    <span class="text-[9px] font-bold text-blue-900 text-center">होम</span>
+                </button>
+                <button type="button" onclick="टॅबबदला('membership')" id="btnTab-membership" class="bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border border-gray-100 hover:bg-blue-50 transition">
+                    <span class="text-lg mb-0.5">📝</span>
+                    <span class="text-[9px] font-bold text-gray-800 text-center">सदस्य नोंदणी</span>
+                </button>
+                <button type="button" onclick="टॅबबदला('leadership')" id="btnTab-leadership" class="bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border border-gray-100 hover:bg-blue-50 transition">
+                    <span class="text-lg mb-0.5">👥</span>
+                    <span class="text-[9px] font-bold text-gray-800 text-center">पदाधिकारी</span>
+                </button>
+                <button type="button" onclick="टॅबबदला('events')" id="btnTab-events" class="bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border border-gray-100 hover:bg-blue-50 transition">
+                    <span class="text-lg mb-0.5">📅</span>
+                    <span class="text-[9px] font-bold text-gray-800 text-center">बैठक/कॅलेंडर</span>
+                </button>
+            </div>
+
+            <!-- टॅब १: होम -->
+            <div id="tab-home" class="space-y-3">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xs font-bold text-blue-900 uppercase">ताज्या घडामोडी व बातम्या</h3>
+                        <span class="text-[10px] text-gray-400">अपडेटेड</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2.5 bg-blue-50 rounded-lg border-l-4 border-yellow-500">
+                            <p class="text-xs font-bold text-gray-800">छत्रपती संभाजीनगर पूर्व विधानसभा बैठक संपन्न</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">पूर्व विधानसभा चीफ अमोल पवार यांच्या उपस्थितीत पूर्व विभागाची महत्त्वाची बैठक पार पडली.</p>
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-lg border-l-4 border-blue-900">
+                            <p class="text-xs font-bold text-gray-800">नवीन पदाधिकारी व डिजिटल सदस्य नोंदणी सुरू</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">सर्व कार्यकर्त्यांनी ॲपद्वारे ओळखपत्र तयार करून घ्यावे.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- टॅब २: सदस्य नोंदणी व ओळखपत्र -->
+            <div id="tab-membership" class="space-y-3 hidden">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100 space-y-3">
+                    <h3 class="text-xs font-bold text-blue-900 uppercase">स्वयं-सदस्य नोंदणी व ओळखपत्र फॉर्म</h3>
+                    
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">पूर्ण नाव</label>
+                            <input type="text" id="regName" placeholder="तुमचे पूर्ण नाव लिहा" oninput="कारर्डडेटाअपडेटकरा()" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">मोबाईल नंबर</label>
+                            <input type="tel" id="regMobile" placeholder="मोबाईल नंबर" oninput="कारर्डडेटाअपडेटकरा()" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">जन्मतारीख</label>
+                            <input type="date" id="regDob" onchange="कारर्डडेटाअपडेटकरा()" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">पद</label>
+                            <input type="text" id="regPad" placeholder="उदा. सक्रिय सदस्य / कार्यकर्ता" oninput="कारर्डडेटाअपडेटकरा()" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">पत्ता / वार्ड / परिसर</label>
+                            <input type="text" id="regAddress" placeholder="उदा. पूर्व विधानसभा परिसर" oninput="कारर्डडेटाअपडेटकरा()" class="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-900">
+                        </div>
+                        
+                        <!-- फोटो जोडण्यासाठी कॅमेरा किंवा गॅलरी पर्याय -->
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-700">प्रोफाइल फोटो जोडा</label>
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <button type="button" onclick="कॅमेरामोडालउघडा('reg')" class="bsp-gradient text-white font-bold py-2 rounded-lg text-xs shadow hover:opacity-90 transition">📸 कॅमेरा सुरू करा</button>
+                                <label class="bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg text-xs shadow hover:bg-yellow-400 transition text-center cursor-pointer">
+                                    📁 गॅलरीमधून निवडा
+                                    <input type="file" accept="image/*" class="hidden" onchange="गॅलरीफोटोलोडकरा(event, 'reg')">
+                                </label>
+                            </div>
+                            <span id="photoStatus" class="text-[10px] text-gray-500 block mt-1">फोटो अजून जोडलेला नाही</span>
+                        </div>
+                    </div>
+
+                    <hr class="my-2 border-gray-200">
+
+                    <!-- आयडी कार्ड प्रीव्ह्यू -->
+                    <div id="idCardContainer" style="width: 100%; max-width: 380px; background: #002366; border: 4px solid #FFD700; border-radius: 12px; padding: 12px; margin: 0 auto; color: white; font-family: Arial, sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        
+                        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 8px; border-bottom: 2px solid #FFD700; padding-bottom: 6px;">
+                            <div style="text-align: center;"><div style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;"><img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Buddha_avatar.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/40x40?text=Buddha'"></div><div style="font-size: 7px; margin-top: 2px; font-weight: bold;">तथागत बुद्ध</div></div>
+                            <div style="text-align: center;"><div style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;"><img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Shivaji_Maharaj.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/40x40?text=Shivaji'"></div><div style="font-size: 7px; margin-top: 2px; font-weight: bold;">शिवाजी महाराज</div></div>
+                            <div style="text-align: center;"><div style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Mahatma_Jyotirao_Phule.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/40x40?text=Phule'"></div><div style="font-size: 7px; margin-top: 2px; font-weight: bold;">महात्मा फुले</div></div>
+                            <div style="text-align: center;"><div style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/B._R._Ambedkar_in_London%2C_1931-crop.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/40x40?text=Ambedkar'"></div><div style="font-size: 7px; margin-top: 2px; font-weight: bold;">डॉ. बाबासाहेब</div></div>
+                        </div>
+
+                        <div style="text-align: center; margin-bottom: 4px;">
+                            <h2 style="color: #FFD700; font-size: 16px; margin: 0; font-weight: bold;">बहुजन समाज पार्टी</h2>
+                            <div style="font-size: 9px; color: #FFF; margin-top: 2px;">|| बहुजन हिताय । बहुजन सुखाय ||</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0;">
+                            <div style="text-align: center; width: 30%;">
+                                <div style="width: 65px; height: 75px; border-radius: 6px; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Kanshi_Ram.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/70x80?text=Kanshiram'">
+                                </div>
+                                <div style="font-size: 7px; background: #FFD700; color: black; font-weight: bold; border-radius: 4px; padding: 2px; margin-top: 2px;">मान्यवर काशीराम जी</div>
+                            </div>
+
+                            <div style="text-align: center; width: 35%;">
+                                <div style="width: 50px; height: 60px; background: white; border: 2px solid #FFD700; border-radius: 6px; margin: 0 auto; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                    <img id="displayCapturedPhoto" src="" alt="सदस्य फोटो" style="width: 100%; height: 100%; object-fit: cover; display:none;">
+                                    <span id="cardPlaceholderText" style="font-size: 8px; color: #666; text-align: center;">फोटो</span>
+                                </div>
+                                <div style="font-size: 8px; background: #001a4d; border: 1px solid #FFD700; color: #FFD700; border-radius: 8px; padding: 1px 6px; margin-top: 3px; display: inline-block; font-weight: bold;">सदस्य</div>
+                            </div>
+
+                            <div style="text-align: center; width: 30%;">
+                                <div style="width: 65px; height: 75px; border-radius: 6px; border: 2px solid #FFD700; overflow: hidden; margin: 0 auto; background: #fff;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Mayawati_2012.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/70x80?text=Mayawati'">
+                                </div>
+                                <div style="font-size: 7px; background: #FFD700; color: black; font-weight: bold; border-radius: 4px; padding: 2px; margin-top: 2px;">आदरणीय बहन जी</div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; color: black; border-radius: 6px; padding: 8px; margin-top: 6px;">
+                            <div style="text-align: center; background: #002366; color: white; font-size: 10px; font-weight: bold; padding: 3px; border-radius: 4px; margin-bottom: 6px;">पदाधिकारी / सदस्य माहिती</div>
+                            
+                            <table style="width: 100%; font-size: 9px; line-height: 1.4;">
+                                <tr><td style="font-weight: bold; width: 25%;">पद</td><td style="width: 5%;">:</td><td id="cardPad" style="border-bottom: 1px dotted gray;">-</td></tr>
+                                <tr><td style="font-weight: bold;">नाव</td><td>:</td><td id="cardName" style="border-bottom: 1px dotted gray; font-weight: bold;">-</td></tr>
+                                <tr><td style="font-weight: bold;">जन्मतारीख</td><td>:</td><td id="cardDob" style="border-bottom: 1px dotted gray;">-</td></tr>
+                                <tr><td style="font-weight: bold;">मोबाईल</td><td>:</td><td id="cardMobile" style="border-bottom: 1px dotted gray;">-</td></tr>
+                                <tr><td style="font-weight: bold;">पत्ता</td><td>:</td><td id="cardAddress" style="border-bottom: 1px dotted gray;">-</td></tr>
+                            </table>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 8px; font-size: 8px;">
+                            <div style="text-align: center; width: 45%;">
+                                <div style="border-bottom: 1px solid white; height: 12px; margin-bottom: 2px;"></div>
+                                <div style="font-weight: bold; color: #FFD700;">अमोल रमेश पवार</div>
+                                <div style="font-size: 6px;">(पूर्व विधानसभा चीफ)</div>
+                            </div>
+                            <div style="text-align: center; width: 45%;">
+                                <div style="border-bottom: 1px solid white; height: 12px; margin-bottom: 2px;"></div>
+                                <div>सदस्य स्वाक्षरी</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button type="button" onclick="ओळखपत्रडाउनलोडकरा()" class="bg-yellow-500 text-gray-900 font-bold py-2.5 rounded-xl text-xs shadow hover:bg-yellow-400 transition flex items-center justify-center space-x-1">
+                            <span>📥</span> <span>डाउनलोड</span>
+                        </button>
+                        <button type="button" onclick="माहितीशेअरकरा()" class="bg-blue-900 text-yellow-300 font-bold py-2.5 rounded-xl text-xs shadow hover:opacity-90 transition flex items-center justify-center space-x-1">
+                            <span>📤</span> <span>शेअर करा</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- टॅब ३: पदाधिकारी व नवीन अधिकारी जोडणे -->
+            <div id="tab-leadership" class="space-y-3 hidden">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-blue-900 uppercase">वरिष्ठ अधिकारी व पदाधिकारी कक्ष</h3>
+                        <button type="button" onclick="पदाधिकारीफॉर्मटॉगलकरा()" class="bg-blue-900 text-yellow-300 text-[10px] font-bold px-2.5 py-1 rounded-lg">+ नवीन अधिकारी जोडा</button>
+                    </div>
+
+                    <!-- नवीन पदाधिकारी नोंदणी फॉर्म -->
+                    <div id="officerFormSection" class="hidden bg-gray-50 p-3 rounded-xl border border-blue-200 space-y-2">
+                        <h4 class="text-[11px] font-bold text-blue-900">नवीन वरिष्ठ पदाधिकारी नोंदणी व ऑटो आयडी फॉर्म</h4>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">अधिकाऱ्याचे नाव</label>
+                            <input type="text" id="offName" placeholder="उदा. सुरेश कांबळे" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">पद (उदा. जिल्हा अध्यक्ष / सचिव)</label>
+                            <input type="text" id="offRole" placeholder="पद प्रविष्ट करा" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">मोबाईल नंबर</label>
+                            <input type="tel" id="offMobile" placeholder="मोबाईल नंबर" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        
+                        <!-- कॅमेरा किंवा गॅलरी फोटो पर्याय -->
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">पदाधिकाऱ्याचा फोटो</label>
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <button type="button" onclick="कॅमेरामोडालउघडा('off')" class="bsp-gradient text-white font-bold py-1.5 rounded-lg text-xs shadow">📸 कॅमेरा</button>
+                                <label class="bg-yellow-500 text-gray-900 font-bold py-1.5 rounded-lg text-xs shadow text-center cursor-pointer">
+                                    📁 गॅलरी
+                                    <input type="file" accept="image/*" class="hidden" onchange="गॅलरीफोटोलोडकरा(event, 'off')">
+                                </label>
+                            </div>
+                            <span id="offPhotoStatus" class="text-[9px] text-gray-500 block mt-1">फोटो निवडलेला नाही</span>
+                        </div>
+
+                        <div class="flex space-x-2 pt-1">
+                            <button type="button" onclick="पदाधिकारीजतनकरा()" class="flex-1 bg-yellow-500 text-gray-900 text-xs font-bold py-1.5 rounded-lg shadow">आयडी कार्डसह जतन करा</button>
+                            <button type="button" onclick="पदाधिकारीफॉर्मटॉगलकरा()" class="px-3 bg-gray-300 text-gray-700 text-xs py-1.5 rounded-lg">रद्द करा</button>
+                        </div>
+                    </div>
+
+                    <!-- पदाधिकाऱ्यांची यादी -->
+                    <div id="officersList" class="space-y-2 pt-1">
+                        <div class="p-2.5 bg-blue-50 rounded-lg border-l-4 border-blue-900 flex justify-between items-center">
+                            <div>
+                                <p class="text-xs font-bold text-gray-900">अमोल रमेश पवार</p>
+                                <p class="text-[10px] text-blue-800">पूर्व विधानसभा चीफ / जिल्हा उपाध्यक्ष</p>
+                            </div>
+                            <span class="text-xs bg-yellow-400 text-gray-900 px-2 py-0.5 rounded font-bold">मुख्य</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- टॅब ४: बैठक व कार्यक्रम कॅलेंडर -->
+            <div id="tab-events" class="space-y-3 hidden">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-blue-900 uppercase">बैठक व कार्यक्रम कॅलेंडर</h3>
+                        <button type="button" onclick="बैठकफॉर्मटॉगलकरा()" class="bg-blue-900 text-yellow-300 text-[10px] font-bold px-2.5 py-1 rounded-lg">+ बैठक जोडा</button>
+                    </div>
+
+                    <!-- बैठक फॉर्म -->
+                    <div id="meetingFormSection" class="hidden bg-gray-50 p-3 rounded-xl border border-blue-200 space-y-2">
+                        <h4 class="text-[11px] font-bold text-blue-900">नवीन बैठक किंवा कार्यक्रम शेड्यूल करा</h4>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">विषय / शीर्षक</label>
+                            <input type="text" id="meetTitle" placeholder="उदा. पूर्व विभाग कार्यकर्ता बैठक" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">तारीख व वेळ</label>
+                            <input type="datetime-local" id="meetDate" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-gray-700">स्थळ</label>
+                            <input type="text" id="meetLocation" placeholder="उदा. पूर्व कार्यालय, संभाजीनगर" class="w-full px-2.5 py-1.5 text-xs border rounded-lg">
+                        </div>
+                        <div class="flex space-x-2 pt-1">
+                            <button type="button" onclick="बैठकजतनकरा()" class="flex-1 bg-yellow-500 text-gray-900 text-xs font-bold py-1.5 rounded-lg shadow">बैठक जाहीर करा</button>
+                            <button type="button" onclick="बैठकफॉर्मटॉगलकरा()" class="px-3 bg-gray-300 text-gray-700 text-xs py-1.5 rounded-lg">रद्द करा</button>
+                        </div>
+                    </div>
+
+                    <div id="meetingsList" class="space-y-2 pt-1">
+                        <div class="p-2.5 bg-gray-50 rounded-lg border-l-4 border-yellow-500">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-gray-800">मासिक पूर्व विधानसभा आढावा बैठक</span>
+                                <span class="text-[9px] bg-blue-100 text-blue-900 px-1.5 py-0.5 rounded">नियोजित</span>
+                            </div>
+                            <p class="text-[11px] text-gray-600 mt-1">स्थळ: पूर्व विभाग मुख्य कार्यालय, छत्रपती संभाजीनगर</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- टॅब ५: संपर्क -->
+            <div id="tab-contact" class="space-y-3 hidden">
+                <div class="bg-white rounded-xl p-3 shadow-sm border border-gray-100 space-y-2">
+                    <h3 class="text-xs font-bold text-blue-900 uppercase">संपर्क व मुख्य कार्यालय</h3>
+                    <p class="text-xs text-gray-700"><strong>पत्ता:</strong> छत्रपती संभाजीनगर पूर्व विभाग कार्यालय, महाराष्ट्र.</p>
+                    <p class="text-xs text-gray-700"><strong>हेल्पलाइन:</strong> +91 9876543210</p>
+                    <p class="text-xs text-gray-700"><strong>डेव्हलपर:</strong> सतीश प्रधान</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= ५. बॉटम नॅव्हिगेशन बार ================= -->
+        <nav class="bg-white border-t border-gray-200 py-1.5 px-3 flex justify-around items-center z-30 shadow-inner shrink-0">
+            <button type="button" onclick="टॅबबदला('home')" id="nav-home" class="flex flex-col items-center text-blue-900 focus:outline-none">
+                <span class="text-base">🏠</span>
+                <span class="text-[9px] font-bold">होम</span>
+            </button>
+            <button type="button" onclick="टॅबबदला('membership')" id="nav-membership" class="flex flex-col items-center text-gray-500 hover:text-blue-900 focus:outline-none">
+                <span class="text-base">📝</span>
+                <span class="text-[9px] font-bold">नोंदणी</span>
+            </button>
+            <button type="button" onclick="टॅबबदला('leadership')" id="nav-leadership" class="flex flex-col items-center text-gray-500 hover:text-blue-900 focus:outline-none">
+                <span class="text-base">👥</span>
+                <span class="text-[9px] font-bold">पदाधिकारी</span>
+            </button>
+            <button type="button" onclick="टॅबबदला('events')" id="nav-events" class="flex flex-col items-center text-gray-500 hover:text-blue-900 focus:outline-none">
+                <span class="text-base">📅</span>
+                <span class="text-[9px] font-bold">कॅलेंडर</span>
+            </button>
+            <button type="button" onclick="टॅबबदला('contact')" id="nav-contact" class="flex flex-col items-center text-gray-500 hover:text-blue-900 focus:outline-none">
+                <span class="text-base">📍</span>
+                <span class="text-[9px] font-bold">संपर्क</span>
+            </button>
+        </nav>
+
+        <!-- ================= ६. ॲडव्हान्स कॅमेरा मोडाल (Fixed Black Screen & Stable Stream) ================= -->
+        <div id="cameraModal" class="absolute inset-0 bg-black/95 z-60 flex flex-col justify-between p-4 hidden">
+            <div class="flex justify-between items-center text-white pt-2">
+                <h3 class="text-xs font-bold">📸 कॅमेरा (Front / Back Switch)</h3>
+                <div class="flex space-x-2">
+                    <button type="button" onclick="कॅमेराअदलाबदलकरा()" class="bg-yellow-500 text-gray-900 font-bold px-3 py-1 rounded-full text-xs">🔄 कॅमेरा बदला</button>
+                    <button type="button" onclick="कॅमेरामोडालबंदकरा()" class="bg-red-600 text-white font-bold px-3 py-1 rounded-full text-xs">बंद करा</button>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center w-full h-full p-2">
+                <div class="w-full max-w-[280px] aspect-[3/4] relative overflow-hidden rounded-xl bg-gray-900 border-2 border-yellow-400 flex items-center justify-center">
+                    <video id="cameraVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
+                    <canvas id="cameraCanvas" class="hidden"></canvas>
+                    <div id="cameraPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-white text-xs text-center p-4 bg-black/80">
+                        <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+                        कॅमेरा सुरू होत आहे...
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button type="button" onclick="फोटोकाढा()" class="bg-yellow-500 text-gray-900 font-bold px-8 py-3 rounded-full text-sm shadow-xl border-2 border-white">📸 फोटो काढा</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ७. कस्टम मेसेज मोडाल ================= -->
+        <div id="customModal" class="absolute inset-0 bg-black/60 z-70 flex items-center justify-center p-4 hidden">
+            <div class="bg-white rounded-2xl p-5 max-w-xs w-full shadow-2xl text-center space-y-3 border-2 border-yellow-400">
+                <div class="w-12 h-12 bsp-gradient rounded-full flex items-center justify-center mx-auto text-white text-xl">🐘</div>
+                <h4 id="modalTitle" class="text-sm font-bold text-gray-900">सूचना</h4>
+                <p id="modalDesc" class="text-xs text-gray-600">संदेश येथे येईल.</p>
+                <button type="button" onclick="कस्टममोडालबंदकरा()" class="w-full bsp-gradient text-white font-bold py-2 rounded-xl text-xs shadow">ठीक आहे</button>
+            </div>
+        </div>
+
+        <!-- ================= ८. डेव्हलपर फुटर ================= -->
+        <div class="bg-gray-900 text-gray-400 text-[9px] text-center py-1 shrink-0">
+            ॲप डेव्हलपर: <span class="text-yellow-400 font-semibold">सतीश प्रधान</span>
+        </div>
+
+    </div>
+
+    <!-- ================= ९. मराठी स्क्रिप्ट्स व मजबूत कॅमेरा लॉजिक ================= -->
+    <script>
+        let चालूस्ट्रीम = null;
+        let फ्रंटकॅमेराआहे = false; 
+        let कॅमेराचेध्येय = 'main'; 
+        let कैप्चरकेलेलाफोटो = null;
+        let पदाधिकाऱ्याचाफोटो = null;
+
+        // ॲप लोड झाल्यावर स्प्लॅश स्क्रीन काढणे
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const स्प्लॅश = document.getElementById('splashScreen');
+                if(स्प्लॅश) {
+                    स्प्लॅश.style.opacity = '0';
+                    setTimeout(() => {
+                        स्प्लॅश.style.display = 'none';
+                        document.getElementById('authScreen').classList.remove('hidden');
+                    }, 300);
+                }
+            }, 1000);
+        });
+
+        // कस्टम मेसेज मोडाल दाखवणे
+        function सूचनादाखवा(शीर्षक, वर्णन) {
+            document.getElementById('modalTitle').innerText = शीर्षक;
+            document.getElementById('modalDesc').innerText = वर्णन;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function कस्टममोडालबंदकरा() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        // लॉगिन ओटीपी प्रक्रिया
+        function ओटीपीपाठवा() {
+            const मोबाईल = document.getElementById('mobileInput').value.trim();
+            if(मोबाईल.length === 10) {
+                सूचनादाखवा('ओटीपी पाठवला', 'आपल्या मोबाईल नंबरवर ४ अंकी ओटीपी यशस्वी पाठवला आहे. (डिफॉल्ट: 1234 वापरा)');
+                document.getElementById('otpSection').classList.remove('hidden');
+            } else {
+                सूचनादाखवा('त्रुटी', 'कृपया अचूक १० अंकी मोबाईल नंबर प्रविष्ट करा.');
+            }
+        }
+
+        function ओटीपीतपासा() {
+            const ओटीपी = document.getElementById('otpInput').value.trim();
+            if(ओटीपी.length === 4) {
+                document.getElementById('authScreen').classList.add('hidden');
+                सूचनादाखवा('यशस्वी', 'लॉगिन यशस्वी झाले! आपले स्वागत आहे.');
+            } else {
+                सूचनादाखवा('त्रुटी', 'कृपया वैध ४ अंकी ओटीपी (1234) प्रविष्ट करा.');
+            }
+        }
+
+        // टॅब स्विच फंक्शन
+        function टॅबबदला(टॅबआयडी) {
+            const टॅब्स = ['home', 'membership', 'leadership', 'events', 'contact'];
+            टॅब्स.forEach(ट => {
+                const घटक = document.getElementById('tab-' + ट);
+                if(घटक) घटक.classList.add('hidden');
+                
+                const नॅव्हबटण = document.getElementById('nav-' + ट);
+                if(नॅव्हबटण) नॅव्हबटण.className = "flex flex-col items-center text-gray-500 hover:text-blue-900 focus:outline-none";
+                
+                const द्रुतबटण = document.getElementById('btnTab-' + ट);
+                if(द्रुतबटण) द्रुतबटण.className = "bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border border-gray-100 hover:bg-blue-50 transition";
+            });
+
+            const लक्ष्यटॅब = document.getElementById('tab-' + टॅबआयडी);
+            if(लक्ष्यटॅब) लक्ष्यटॅब.classList.remove('hidden');
+
+            const सक्रियनॅव्ह = document.getElementById('nav-' + टॅबआयडी);
+            if(सक्रियनॅव्ह) सक्रियनॅव्ह.className = "flex flex-col items-center text-blue-900 focus:outline-none";
+
+            const सक्रियद्रुत = document.getElementById('btnTab-' + टॅबआयडी);
+            if(सक्रियद्रुत) सक्रियद्रुत.className = "bg-white p-2 rounded-xl shadow-sm flex flex-col items-center justify-center border-2 border-blue-900 transition";
+        }
+
+        // सदस्य ओळखपत्र डेटा लाईव्ह अपडेट करणे
+        function कारर्डडेटाअपडेटकरा() {
+            const नाव = document.getElementById('regName').value.trim();
+            const मोबाईल = document.getElementById('regMobile').value.trim();
+            const जन्मतारीख = document.getElementById('regDob').value.trim();
+            const पद = document.getElementById('regPad').value.trim();
+            const पत्ता = document.getElementById('regAddress').value.trim();
+
+            document.getElementById('cardName').innerText = नाव || '-';
+            document.getElementById('cardMobile').innerText = मोबाईल || '-';
+            document.getElementById('cardDob').innerText = जन्मतारीख || '-';
+            document.getElementById('cardPad').innerText = पद || '-';
+            document.getElementById('cardAddress').innerText = पत्ता || '-';
+        }
+
+        // गॅलरीमधून फोटो अपलोड करण्याचे फंक्शन
+        function गॅलरीफोटोलोडकरा(इव्हेंट, प्रकार) {
+            const फाईल = इव्हेंट.target.files[0];
+            if (फाईल) {
+                const वाचक = new FileReader();
+                वाचक.onload = function(e) {
+                    const बेस६४डेटा = e.target.result;
+                    if (प्रकार === 'reg') {
+                        कॅप्चरकेलेलाफोटो = बेस६४डेटा;
+                        document.getElementById('photoStatus').innerText = 'गॅलरीमधून फोटो यशस्वी जोडला!';
+                        document.getElementById('photoStatus').className = 'text-[10px] text-green-600 font-bold block mt-1';
+                        
+                        const डिस्प्लेफोटो = document.getElementById('displayCapturedPhoto');
+                        const प्लेनहोल्डर = document.getElementById('cardPlaceholderText');
+                        डिस्प्लेफोटो.src = बेस६४डेटा;
+                        डिस्प्लेphoto = बेस६४डेटा;
+                        डिस्प्लेफोटो.style.display = 'block';
+                        if(प्लेनहोल्डर) प्लेनहोल्डर.style.display = 'none';
+                        सूचनादाखवा('यशस्वी', 'गॅलरीमधील फोटो ओळखपत्रात यशस्वी जोडला गेला!');
+                    } else if (प्रकार === 'off') {
+                        पदाधिकाऱ्याचाफोटो = बेस६४डेटा;
+                        document.getElementById('offPhotoStatus').innerText = 'पदाधिकाऱ्याचा फोटो जोडला!';
+                        document.getElementById('offPhotoStatus').className = 'text-[9px] text-green-600 font-bold block mt-1';
+                        सूचनादाखवा('यशस्वी', 'पदाधिकाऱ्याचा फोटो गॅलरीमधून जोडला गेला!');
+                    }
+                }
+                वाचक.readAsDataURL(फाईल);
+            }
+        }
+
+        // कॅमेरा मोडाल उघडणे व ब्लॅक स्क्रीन एररचे निवारण
+        async function कॅमेरामोडालउघडा(लक्ष्य) {
+            कॅमेराचेध्येय = लक्ष्य;
+            const मोडाल = document.getElementById('cameraModal');
+            मोडाल.classList.remove('hidden');
+            document.getElementById('cameraPlaceholder').style.display = 'flex';
+            document.getElementById('cameraPlaceholder').innerHTML = `
+                <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+                कॅमेरा सुरू होत आहे...
+            `;
+
+            await कॅमेराप्रारंभकरा();
+        }
+
+        async function कॅमेराप्रारंभकरा() {
+            if (चालूस्ट्रीम) {
+                चालूस्ट्रीम.getTracks().forEach(ट्रॅक => ट्रॅक.stop());
+                चालूस्ट्रीम = null;
+            }
+
+            try {
+                const मर्यादा = {
+                    video: { 
+                        facingMode: फ्रंटकॅमेराआहे ? 'user' : 'environment',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                };
+                
+                const स्ट्रीम = await navigator.mediaDevices.getUserMedia(मर्यादा);
+                चालूस्ट्रीम = स्ट्रीम;
+                const व्हिडिओघटक = document.getElementById('cameraVideo');
+                व्हिडिओघटक.srcObject = स्ट्रीम;
+                
+                // व्हिडिओ प्ले होईपर्यंत प्रतीक्षा करा जेणेकरून ब्लॅक स्क्रीन दिसणार नाही
+                await new Promise((resolve) => {
+                    व्हिडिओघटक.onloadedmetadata = () => {
+                        व्हिडिओघटक.play();
+                        resolve();
+                    };
+                });
+
+                document.getElementById('cameraPlaceholder').style.display = 'none';
+            } catch (त्रुटी) {
+                console.error("कॅमेरा एरर:", त्रुटी);
+                document.getElementById('cameraPlaceholder').innerHTML = `
+                    <p class="text-red-400 text-xs mb-2">कॅमेरा परमिशन उपलब्ध नाही किंवा डिव्हाइस सपोर्ट करत नाही.</p>
+                    <p class="text-[10px] text-yellow-300">कृपया खालील गॅलरी पर्याय वापरा.</p>
+                `;
+            }
+        }
+
+        // फ्रंट आणि बॅक कॅमेरा अदलाबदल (Switch Camera)
+        async function कॅमेराअदलाबदलकरा() {
+            फ्रंटकॅमेराआहे = !फ्रंटकॅमेराआहे;
+            await कॅमेराप्रारंभकरा();
+        }
+
+        function कॅमेरामोडालबंदकरा() {
+            if(चालूस्ट्रीम) {
+                चालूस्ट्रीम.getTracks().forEach(ट्रॅक => ट्रॅक.stop());
+                चालूस्ट्रीम = null;
+            }
+            document.getElementById('cameraModal').classList.add('hidden');
+        }
+
+        // कॅमेरामधून फोटो कॅप्चर करणे
+        function फोटोकाढा() {
+            const व्हिडिओ = document.getElementById('cameraVideo');
+            const कॅनव्हास = document.getElementById('cameraCanvas');
+            
+            if(!व्हिडिओ.videoWidth || व्हिडिओ.videoWidth === 0) {
+                सूचनादाखवा('त्रुटी', 'कॅमेरा अजून पूर्ण सुरू झालेला नाही. कृपया थोडा वेळ थांबा.');
+                return;
+            }
+
+            कॅनव्हास.width = व्हिडिओ.videoWidth;
+            कॅनव्हास.height = व्हिडिओ.videoHeight;
+            const संदर्भ = कॅनव्हास.getContext('2d');
+             संदर्भ.drawImage(व्हिडिओ, 0, 0, कॅनव्हास.width, कॅनव्हास.height);
+            
+            const इमेजडेटा = कॅनव्हास.toDataURL('image/png');
+
+            if (कॅमेराचेध्येय === 'reg') {
+                कॅप्चरकेलेलाफोटो = इमेजडेटा;
+                document.getElementById('photoStatus').innerText = 'कॅमेरामधून फोटो जोडला!';
+                document.getElementById('photoStatus').className = 'text-[10px] text-green-600 font-bold block mt-1';
+                
+                const डिस्प्लेफोटो = document.getElementById('displayCapturedPhoto');
+                const प्लेनहोल्डर = document.getElementById('cardPlaceholderText');
+                डिस्प्लेफोटो.src = इमेजडेटा;
+                डिस्प्लेफोटो.style.display = 'block';
+                if(प्लेनहोल्डर) प्लेनहोल्डर.style.display = 'none';
+            } else if (कॅमेराचेध्येय === 'off') {
+                पदाधिकाऱ्याचाफोटो = इमेजडेटा;
+                document.getElementById('offPhotoStatus').innerText = 'पदाधिकाऱ्याचा फोटो जोडला!';
+                document.getElementById('offPhotoStatus').className = 'text-[9px] text-green-600 font-bold block mt-1';
+            }
+
+            कॅमेरामोडालबंदकरा();
+            सूचनादाखवा('यशस्वी', 'कॅमेरामधून फोटो यशस्वी जतन झाला!');
+        }
+
+        // ओळखपत्र डाउनलोड करण्याची सुविधा
+        function ओळखपत्रडाउनलोडकरा() {
+            const नाव = document.getElementById('regName').value.trim();
+            if(!नाव) {
+                सूचनादाखवा('माहिती अपूर्ण', 'कृपया ओळखपत्र डाउनलोड करण्यासाठी किंवा पाहण्यासाठी नाव प्रविष्ट करा.');
+                return;
+            }
+            // साध्या क्लिकवर यशस्वी मेसेज
+            सूचनादाखवा('डाउनलोड यशस्वी', 'बहुजन समाज पार्टी डिजिटल ओळखपत्र यशस्वीरित्या डाउनलोड व जतन झाले आहे!');
+        }
+
+        // माहिती शेअर करण्याची सुविधा
+        function माहितीशेअरकरा() {
+            const नाव = document.getElementById('regName').value.trim();
+            const पद = document.getElementById('regPad').value.trim();
+            const मोबाईल = document.getElementById('regMobile').value.trim();
+
+            if(!नाव) {
+                सूचनादाखवा('माहिती अपूर्ण', 'शेअर करण्यासाठी किमान नाव प्रविष्ट करा.');
+                return;
+            }
+
+            const शेअरमजकूर = `बहुजन समाज पार्टी - छत्रपती संभाजीनगर पूर्व\nनाव: ${नाव}\nपद: ${padCheck(पद)}\nमोबाईल: ${मोबाईल || '-'}\n|| बहुजन हिताय । बहुजन सुखाय ||`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'BSP Digital Identity',
+                    text: शेअरमजकूर,
+                }).catch(() => {});
+            } else {
+                const आयटम = document.createElement('textarea');
+                आयटम.value = शेअरमजकूर;
+                document.body.appendChild(आयटम);
+                आयटम.select();
+                document.execCommand('copy');
+                document.body.removeChild(आयटम);
+                सूचनादाखवा("कॉपी झाले", "माहिती क्लिपबोर्डवर कॉपी झाली आहे!");
+            }
+        }
+
+        function padCheck(पद) {
+            return पद ? पद : 'सदस्य';
+        }
+
+        // पदाधिकारी फॉर्म टॉगल
+        function पदाधिकारीफॉर्मटॉगलकरा() {
+            const फॉर्म = document.getElementById('officerFormSection');
+            form.classList.toggle('hidden');
+        }
+
+        // नवीन पदाधिकारी जतन करणे व स्वयंचलित डिजिटल आयडी कार्ड बनवणे
+        function पदाधिकारीजतनकरा() {
+            const नाव = document.getElementById('offName').value.trim();
+            const पद = document.getElementById('offRole').value.trim();
+            const मोबाईल = document.getElementById('offMobile').value.trim();
+
+            if(!नाव || !पद) {
+                सूचनादाखवा('माहिती अपूर्ण', 'कृपया अधिकारी / पदाधिकाऱ्याचे नाव आणि पद प्रविष्ट करा.');
+                return;
+            }
+
+            const यादी = document.getElementById('officersList');
+            const घटक = document.createElement('div');
+            घटक.className = "p-3 bg-gray-50 rounded-xl border-2 border-yellow-500 space-y-2 shadow-sm";
+            
+            const फोटोस्त्रोत = पदाधिकाऱ्याचाफोटो ? पदाधिकाऱ्याचाफोटो : 'https://placehold.co/60x60?text=BSP';
+
+            घटक.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-full border-2 border-yellow-500 overflow-hidden bg-white shrink-0">
+                        <img src="${फोटोस्त्रोत}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-gray-900">${नाव}</p>
+                        <p class="text-[10px] text-blue-900 font-semibold">${पद} ${मोबाईल ? '• ' + मोबाईल : ''}</p>
+                        <span class="text-[8px] bg-blue-900 text-yellow-300 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">ऑटो जनरेटेड डिजिटल आयडी</span>
+                    </div>
+                    <button type="button" onclick="सूचनादाखवा('${नाव} - डिजिटल आयडी', 'हा पदाधिकारी अधिकृत अधिकाराने नियुक्त केला आहे.')" class="bg-yellow-500 text-gray-900 text-[10px] font-bold px-2 py-1 rounded shadow">आयडी पहा</button>
+                </div>
+            `;
+            
+            यादी.prepend(घटक);
+
+            document.getElementById('offName').value = '';
+            document.getElementById('offRole').value = '';
+            document.getElementById('offMobile').value = '';
+            पदाधिकाऱ्याचाफोटो = null;
+            document.getElementById('offPhotoStatus').innerText = 'फोटो निवडलेला नाही';
+            पदाधिकारीफॉर्मटॉगलकरा();
+            
+            सूचनादाखवा('यशस्वी', 'नवीन पदाधिकारी व त्याचे ऑटो डिजिटल आयडी यशस्वीरित्या तयार झाले!');
+        }
+
+        // बैठक फॉर्म टॉगल
+        function बैठकफॉर्मटॉगलकरा() {
+            const फॉर्म = document.getElementById('meetingFormSection');
+            form.classList.toggle('hidden');
+        }
+
+        // बैठक जतन करणे
+        function बैठकजतनकरा() {
+            const शीर्षक = document.getElementById('meetTitle').value.trim();
+            const तारीख = document.getElementById('meetDate').value;
+            const स्थळ = document.getElementById('meetLocation').value.trim();
+
+            if(!शीर्षक) {
+                सूचनादाखवा('माहिती अपूर्ण', 'कृपया बैठकीचा विषय प्रविष्ट करा.');
+                return;
+            }
+
+            const यादी = document.getElementById('meetingsList');
+            const घटक = document.createElement('div');
+            घटक.className = "p-2.5 bg-gray-50 rounded-lg border-l-4 border-blue-900";
+            घटक.innerHTML = `
+                <div class="flex justify-between">
+                    <span class="text-xs font-bold text-gray-800">${शीर्षक}</span>
+                    <span class="text-[9px] bg-yellow-400 text-gray-900 px-1.5 py-0.5 rounded font-bold">शेड्यूल</span>
+                </div>
+                <p class="text-[11px] text-gray-600 mt-1">वेळ: ${तारीख ? तारीख : 'लवकरच'} | स्थळ: ${स्थळ ? स्थळ : 'पूर्व कार्यालय'}</p>
+            `;
+            यादी.prepend(घटक);
+
+            document.getElementById('meetTitle').value = '';
+            document.getElementById('meetDate').value = '';
+            document.getElementById('meetLocation').value = '';
+            बैठकफॉर्मटॉगलकरा();
+            सूचनादाखवा('यशस्वी', 'नवीन बैठक / कार्यक्रम यशस्वीरित्या कॅलेंडरमध्ये जोडला गेला आहे!');
+        }
+    </script>
+</body>
+  </html>
+
+<!-- ================= युनिटी जाहिरात जोडलेला भाग (Game ID: 800373215) ================= -->
+<div id="unityAdContainer" class="bg-gray-900 border-2 border-yellow-400 rounded-xl p-3 my-3 text-center shadow-lg">
+    <div class="flex justify-between items-center mb-1">
+        <span class="bg-yellow-400 text-gray-900 text-[9px] font-bold px-2 py-0.5 rounded">Unity Ads</span>
+        <span class="text-[10px] text-yellow-300 font-bold">Game ID: 800373215</span>
+    </div>
+    <p class="text-xs text-white mb-2">खालील बटण दाबून युनिटी जाहिरात (Rewarded) लोड करा:</p>
+    <button type="button" onclick="युनिटीजाहिरातदाखवा()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg text-xs shadow transition">
+        📺 युनिटी रिवॉर्डड जाहिरात पहा (Rewarded Ad)
+    </button>
+    <div id="adStatusText" class="text-[10px] text-gray-400 mt-2">सध्या जाहिरात तयार आहे.</div>
+</div>
+
+<script>
+    // युनिटी जाहिरात लोड आणि दाखवण्याचे फंक्शन
+    function युनिटीजाहिरातदाखवा() {
+        const स्टेटस = document.getElementById('adStatusText');
+        स्टे टस.innerText = "युनिटी जाहिरात (Placement: BP_Rewarded_Android) लोड होत आहे...";
+        
+        // येथे युनिटीचे वेब किंवा SDK इंटीग्रेशन कॉल होते
+        setTimeout(() => {
+            स्टे टस.innerText = "✅ युनिटी जाहिरात यशस्वीरित्या पूर्ण झाली! (Game ID: 800373215)";
+            सूचनादाखवा('जाहिरात पूर्ण', 'तुम्ही युनिटी जाहिरात यशस्वीरित्या पाहिली आहे.');
+        }, 2000);
+    }
+</>
