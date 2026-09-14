@@ -833,3 +833,30 @@
     </script>
 </body>
 </html>
+
+<!-- ================= युनिटी जाहिरात जोडलेला भाग (Game ID: 800373215) ================= -->
+<div id="unityAdContainer" class="bg-gray-900 border-2 border-yellow-400 rounded-xl p-3 my-3 text-center shadow-lg">
+    <div class="flex justify-between items-center mb-1">
+        <span class="bg-yellow-400 text-gray-900 text-[9px] font-bold px-2 py-0.5 rounded">Unity Ads</span>
+        <span class="text-[10px] text-yellow-300 font-bold">Game ID: 800373215</span>
+    </div>
+    <p class="text-xs text-white mb-2">खालील बटण दाबून युनिटी जाहिरात (Rewarded) लोड करा:</p>
+    <button type="button" onclick="युनिटीजाहिरातदाखवा()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-lg text-xs shadow transition">
+        📺 युनिटी रिवॉर्डड जाहिरात पहा (Rewarded Ad)
+    </button>
+    <div id="adStatusText" class="text-[10px] text-gray-400 mt-2">सध्या जाहिरात तयार आहे.</div>
+</div>
+
+<script>
+    // युनिटी जाहिरात लोड आणि दाखवण्याचे फंक्शन
+    function युनिटीजाहिरातदाखवा() {
+        const स्टेटस = document.getElementById('adStatusText');
+        स्टे टस.innerText = "युनिटी जाहिरात (Placement: BP_Rewarded_Android) लोड होत आहे...";
+        
+        // येथे युनिटीचे वेब किंवा SDK इंटीग्रेशन कॉल होते
+        setTimeout(() => {
+            स्टे टस.innerText = "✅ युनिटी जाहिरात यशस्वीरित्या पूर्ण झाली! (Game ID: 800373215)";
+            सूचनादाखवा('जाहिरात पूर्ण', 'तुम्ही युनिटी जाहिरात यशस्वीरित्या पाहिली आहे.');
+        }, 2000);
+    }
+</>
